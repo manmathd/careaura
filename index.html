@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>CareAura App</title>
+
+  <!-- FONT AWESOME -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- MAIN CSS -->
+  <link rel="stylesheet" href="style.css"/>
+
+</head>
+<body>
+  <div class="phone">
+
+    <!-- HEADER -->
+    <header>
+      <div>
+        <h1>CareAura</h1>
+        <p class="sub">AI-Powered Elderly Wellness</p>
+      </div>
+      <div id="timeNow" class="time"></div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main>
+
+      <!-- LOGIN PAGE -->
+      <section id="page-login" class="page">
+        <div class="card login-card">
+          <h2><i class="fa-solid fa-user"></i> Login</h2>
+          <p class="muted">Enter your name & mobile</p>
+
+          <form id="loginForm" onsubmit="sendOTP(event)">
+            <input id="name" type="text" placeholder="Full Name" required>
+            <input id="mobile" type="tel" placeholder="Mobile Number" maxlength="10" required>
+            <button class="btn" type="submit">Send OTP</button>
+          </form>
+
+          <div id="otpSection" style="display:none; margin-top:15px;">
+            <p class="muted">Enter the OTP sent to your number</p>
+            <input id="otp" type="text" placeholder="Enter OTP" maxlength="4">
+            <button class="btn" onclick="verifyOTP()">Verify OTP</button>
+            <p id="otpInfo" class="muted small"></p>
+          </div>
+        </div>
+      </section>
+
+      <!-- HOME PAGE -->
+      <section id="page-home" class="page">
+        <div class="card">
+          <h2 id="welcomeUser">Welcome, Guest 👋</h2>
+          <p class="muted">Your AI-powered personal care assistant</p>
+
+          <div class="home-grid">
+            <button class="big-btn accent" onclick="showPage('reminders')">
+              <i class="fa-solid fa-clock"></i><span>Reminders</span>
+            </button>
+            <button class="big-btn accent" onclick="showPage('health')">
+              <i class="fa-solid fa-heart-pulse"></i><span>Health</span>
+            </button>
+            <button class="big-btn accent" onclick="showPage('caregivers')">
+              <i class="fa-solid fa-user-group"></i><span>Caregiver</span>
+            </button>
+            <button class="big-btn danger" onclick="showPage('sos')">
+              <i class="fa-solid fa-bell"></i><span>SOS</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Upcoming Reminders</h3>
+          <div id="upcomingList"></div>
+          <p id="noReminders" class="muted">No reminders yet.</p>
+        </div>
+      </section>
+
+      <!-- REMINDERS PAGE -->
+      <section id="page-reminders" class="page">
+        <div class="card">
+          <h2><i class="fa-solid fa-clock"></i> Reminders</h2>
+          <form id="reminderForm">
+            <input id="remText" type="text" placeholder="Reminder text" required>
+            <input id="remTime" type="time" required>
+            <button class="btn" type="submit">Add Reminder</button>
+          </form>
+          <div id="remList"></div>
+        </div>
+      </section>
+
+      <!-- SOS PAGE -->
+      <section id="page-sos" class="page">
+        <div class="card center">
+          <h2><i class="fa-solid fa-triangle-exclamation"></i> Emergency SOS</h2>
+          <button class="sos-btn" onclick="triggerSOS()">HELP</button>
+          <p id="sosLog" class="muted"></p>
+        </div>
+      </section>
+
+      <!-- HEALTH PAGE -->
+      <section id="page-health" class="page">
+        <div class="card">
+          <h2><i class="fa-solid fa-heart-pulse"></i> Health Monitor</h2>
+          <div class="health-grid">
+            <div><strong>Heart Rate:</strong> <span id="hrVal">72 bpm</span></div>
+            <div><strong>Steps:</strong> <span id="stepsVal">4300</span></div>
+            <div><strong>Sleep:</strong> <span id="sleepVal">7.5 hrs</span></div>
+            <div><strong>Fall Detection:</strong> <span id="fallVal">OK</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CAREGIVER PAGE -->
+      <section id="page-caregivers" class="page">
+        <div class="card">
+          <h2><i class="fa-solid fa-user-group"></i> Caregiver Dashboard</h2>
+          <input id="quickMsg" type="text" placeholder="Send a message...">
+          <button class="btn" onclick="sendQuickMsg()">Send</button>
+          <div id="cgAlerts"></div>
+        </div>
+      </section>
+
+      <!-- SETTINGS PAGE -->
+      <section id="page-settings" class="page">
+        <div class="card">
+          <h2><i class="fa-solid fa-gear"></i> Settings</h2>
+          <label><input type="checkbox" id="settingSound"> Enable reminder sound</label>
+          <button class="btn small" onclick="logout()">Logout</button>
+        </div>
+      </section>
+    </main>
+
+    <!-- BOTTOM NAV -->
+    <nav class="bottom-nav">
+      <button class="bn-btn active" data-page="home"><i class="fa-solid fa-house"></i><span>Home</span></button>
+      <button class="bn-btn" data-page="reminders"><i class="fa-solid fa-clock"></i><span>Reminders</span></button>
+      <button class="bn-btn" data-page="sos"><i class="fa-solid fa-bell"></i><span>SOS</span></button>
+      <button class="bn-btn" data-page="health"><i class="fa-solid fa-heart"></i><span>Health</span></button>
+      <button class="bn-btn" data-page="caregivers"><i class="fa-solid fa-user-group"></i><span>Caregiver</span></button>
+      <button class="bn-btn" data-page="settings"><i class="fa-solid fa-gear"></i><span>Settings</span></button>
+    </nav>
+
+  </div>
+
+  <audio id="remSound" src=""></audio>
+
+  <div id="toast" class="toast"></div>
+
+  <!-- MAIN JS -->
+  <script src="script.js" defer></script>
+
+</body>
+</html>

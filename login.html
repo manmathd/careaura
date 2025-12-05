@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>CareAura — Login</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+  <div class="phone">
+    <header class="login-header">
+      <h1>CareAura</h1>
+      <p class="sub">Your Smart Elderly Companion</p>
+    </header>
+
+    <main class="center fade-in">
+      <div class="card login-card" role="region" aria-label="Login">
+        <h2><i class="fa-solid fa-user"></i> Login</h2>
+        <p class="muted">Enter your name and mobile number</p>
+
+        <form id="loginForm" class="login-form" onsubmit="sendOTP(event)" autocomplete="off" novalidate>
+          <label class="sr-only" for="name">Full name</label>
+          <input id="name" name="name" type="text" placeholder="Full Name" required />
+
+          <label class="sr-only" for="mobile">Mobile number</label>
+          <input id="mobile" name="mobile" type="tel" placeholder="Mobile Number (10 digits)" maxlength="10" inputmode="numeric" required />
+
+          <button type="submit" class="btn">Send OTP</button>
+        </form>
+
+        <div id="otpSection" class="otp-section" aria-hidden="true">
+          <p class="muted">Enter the OTP sent to your number (demo: OTP appears in console)</p>
+          <input id="otp" type="text" placeholder="Enter OTP" maxlength="6" inputmode="numeric" />
+          <div style="display:flex;gap:10px;margin-top:10px;">
+            <button id="verifyBtn" onclick="verifyOTP()" class="btn">Verify OTP</button>
+            <button id="resendBtn" onclick="resendOTP()" class="btn small alt">Resend</button>
+          </div>
+          <p id="otpInfo" class="muted" style="font-size:13px;margin-top:8px;"></p>
+        </div>
+      </div>
+    </main>
+
+    <footer class="small muted" style="text-align:center; padding:10px;">© 2025 CareAura</footer>
+  </div>
+
+  <div id="toast" class="toast" aria-live="assertive"></div>
+  <script src="login.js" defer></script>
+</body>
+</html>

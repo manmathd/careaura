@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>CareAura — App</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+  <div class="phone" role="application" aria-label="CareAura App">
+    <header>
+      <div>
+        <h1>CareAura</h1>
+        <p class="sub">AI-Powered Elderly Wellness</p>
+      </div>
+      <div class="time" id="timeNow" aria-live="polite"></div>
+    </header>
+
+    <main>
+      <!-- HOME -->
+      <section id="page-home" class="page active" aria-hidden="false">
+        <div class="card fade-in">
+          <h2 id="welcomeUser">Welcome</h2>
+          <p class="muted">Your personal AI-powered care assistant</p>
+
+          <div class="home-grid">
+            <button class="big-btn accent" onclick="showPage('reminders')" aria-label="Reminders"><i class="fa-solid fa-clock"></i><span>Reminders</span></button>
+            <button class="big-btn accent" onclick="showPage('health')" aria-label="Health"><i class="fa-solid fa-heart-pulse"></i><span>Health</span></button>
+            <button class="big-btn accent" onclick="showPage('caregivers')" aria-label="Caregivers"><i class="fa-solid fa-user-group"></i><span>Caregiver</span></button>
+            <button class="big-btn danger" onclick="showPage('sos')" aria-label="SOS"><i class="fa-solid fa-bell"></i><span>SOS</span></button>
+          </div>
+        </div>
+
+        <div class="card fade-in">
+          <h3>Upcoming Reminders</h3>
+          <div id="upcomingList" aria-live="polite"></div>
+          <p id="noReminders" class="muted">No reminders yet. Add one!</p>
+        </div>
+      </section>
+
+      <!-- REMINDERS -->
+      <section id="page-reminders" class="page" aria-hidden="true">
+        <div class="card slide-up">
+          <h2><i class="fa-solid fa-clock"></i> Reminders</h2>
+          <form id="reminderForm">
+            <input id="remText" type="text" placeholder="Medicine name / Task" required />
+            <input id="remTime" type="time" required />
+            <button type="submit" class="btn">Add Reminder</button>
+          </form>
+          <div id="remList" aria-live="polite"></div>
+        </div>
+      </section>
+
+      <!-- SOS -->
+      <section id="page-sos" class="page" aria-hidden="true">
+        <div class="card center slide-up">
+          <h2><i class="fa-solid fa-triangle-exclamation"></i> Emergency / SOS</h2>
+          <p class="muted">Tap to alert caregivers instantly</p>
+          <button id="sosBtn" class="sos-btn pulse" onclick="triggerSOS()">HELP</button>
+          <p id="sosLog" class="muted" aria-live="polite"></p>
+        </div>
+      </section>
+
+      <!-- HEALTH -->
+      <section id="page-health" class="page" aria-hidden="true">
+        <div class="card fade-in">
+          <h2><i class="fa-solid fa-heart-pulse"></i> Health Monitor</h2>
+          <div class="health-grid">
+            <div><strong>Heart Rate:</strong> <span id="hrVal">72 bpm</span></div>
+            <div><strong>Steps:</strong> <span id="stepsVal">4,312</span></div>
+            <div><strong>Sleep:</strong> <span id="sleepVal">7.5</span> hrs</div>
+            <div><strong>Fall Detection:</strong> <span id="fallVal">OK</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CAREGIVER -->
+      <section id="page-caregivers" class="page" aria-hidden="true">
+        <div class="card fade-in">
+          <h2><i class="fa-solid fa-user-group"></i> Caregiver Dashboard</h2>
+          <div class="quick-send" style="display:flex;gap:8px;margin-top:8px;">
+            <input id="quickMsg" placeholder="Send a message..." />
+            <button id="quickSendBtn" class="btn" onclick="sendQuickMsg()">Send</button>
+          </div>
+          <h4 style="margin-top:12px">Activity</h4>
+          <div id="cgAlerts" aria-live="polite"></div>
+        </div>
+      </section>
+
+      <!-- MESSAGES (placeholder, can be expanded) -->
+      <section id="page-messages" class="page" aria-hidden="true">
+        <div class="card fade-in">
+          <h2><i class="fa-solid fa-comments"></i> Messages</h2>
+          <p class="muted">Simple message history (local). Expand to integrate real chat or push notifications.</p>
+          <div id="messagesList" aria-live="polite"></div>
+        </div>
+      </section>
+
+      <!-- SETTINGS -->
+      <section id="page-settings" class="page" aria-hidden="true">
+        <div class="card fade-in">
+          <h2><i class="fa-solid fa-gear"></i> Settings</h2>
+          <p class="muted">App settings</p>
+          <button class="btn small alt" onclick="logout()">Logout</button>
+          <div style="margin-top:12px;">
+            <label><input type="checkbox" id="settingSound" /> Play sound on reminders (demo)</label>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- bottom nav (7 icons) -->
+    <nav class="bottom-nav" role="navigation" aria-label="Main navigation">
+      <button data-page="home" class="bn-btn active" aria-label="Home"><i class="fa-solid fa-house"></i><span class="bn-label">Home</span></button>
+      <button data-page="reminders" class="bn-btn" aria-label="Reminders"><i class="fa-solid fa-clock"></i><span class="bn-label">Reminders</span></button>
+      <button data-page="sos" class="bn-btn sos-mini" aria-label="SOS"><i class="fa-solid fa-bell"></i><span class="bn-label">SOS</span></button>
+      <button data-page="health" class="bn-btn" aria-label="Health"><i class="fa-solid fa-heart-pulse"></i><span class="bn-label">Health</span></button>
+      <button data-page="caregivers" class="bn-btn" aria-label="Caregivers"><i class="fa-solid fa-user-group"></i><span class="bn-label">Caregivers</span></button>
+      <button data-page="messages" class="bn-btn" aria-label="Messages"><i class="fa-solid fa-comments"></i><span class="bn-label">Messages</span></button>
+      <button data-page="settings" class="bn-btn" aria-label="Settings"><i class="fa-solid fa-gear"></i><span class="bn-label">Settings</span></button>
+    </nav>
+  </div>
+
+  <div id="toast" class="toast" aria-live="assertive" aria-atomic="true"></div>
+  <script src="script.js" defer></script>
+</body>
+</html>
